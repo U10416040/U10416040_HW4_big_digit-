@@ -3,21 +3,51 @@ import java.util.Scanner;
 public class BigNumber {
 	public static void main(String[] atgs){		
 		BigInt BI=new BigInt();
-				
+		int decision_int=1;
+		int decision_decimal=0;
+		int decision=0;
+		
 		Scanner input = new Scanner(System.in);
+		
+		System.out.print("Input 1 for integer, 2 for decimal: ");
+	    decision = input.nextInt();		
+	    System.out.printf("%d\n", decision);
+	    
+	    if(decision==1){
+	    	System.out.print("Input 1 for add, 2 for subtract, 3 for multiple: ");
+		    decision_int = input.nextInt();
+		    //System.out.printf("%d\n", decsion_int);
+	    }
+	    else if(decision==2){
+	    	System.out.print("Input 1 for add, 2 for subtract: ");
+		    decision_decimal = input.nextInt();
+		    //System.out.printf("%d\n", decsion_decimal);
+	    }
+		
 		
 		System.out.print("Enter first integer: ");
 	    String int1 = input.next();
 	    System.out.print("Enter second integer: ");
 	    String int2 = input.next();
 	    
-	    String test5=new String();
-	    //BI.sub(int1, int2);
-	    //test5=BI.unsign_sub(int1, int2);
-	    //test5=BI.add(int1, int2);
-	    //test5=BI.sub(int1, int2);
-	    test5=BI.multi(int1, int2);
-	    System.out.printf("%s", test5);
+	    String ans=new String();
+	    
+	    if(decision==1){
+	    	if(decision_int==1){
+		    	ans=BI.add(int1, int2);
+		    }
+		    else if(decision_int==2){
+		    	ans=BI.sub(int1, int2);
+		    }
+		    else if(decision_int==3){
+		    	ans=BI.multi(int1, int2);
+		    }
+	    }
+	    else if(decision==2){
+	    	//
+	    }
+
+	    System.out.printf("%s", ans);
 		
 	}
 
