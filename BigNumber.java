@@ -111,8 +111,7 @@ class BigInt{
 	}
 	
 	String add(String a, String b){
-		int comp;
-		int a_sign=0, b_sign=0;
+		int a_sign=0, b_sign=0;//positive
 		String a_prx, b_prx;
 		String retstr;
 		
@@ -376,6 +375,7 @@ class BigInt{
 class BigDecimal{
 	BigInt BI=new BigInt();
 	
+	/*
 	String add(String a, String b){
 		int dotposition;
 		String a_intstr=new String();
@@ -403,6 +403,93 @@ class BigDecimal{
 		
 		return a;
 	}
+	*/
+	
+	String add(String a, String b){
+		int dotposition_a, dotposition_b;
+		String a_intstr=new String();
+		String a_mtisastr=new String();
+		String b_intstr=new String();		
+		String b_mtisastr=new String();
+		String a_num=new String();
+		String b_num=new String();
+		int maxlen, len1, len2;		
+		String retstr=new String();
+		String retint=new String();
+		String retmtisa=new String();
+		
+		//add .0 to those numbers which are integer
+		if(have_dot(a)==0){		
+			a=a+".0";
+		}
+		if(have_dot(b)==0){		
+			b=b+".0";
+		}
+				
+		
+		//get dot position
+		dotposition_a=a.indexOf(".");
+		dotposition_b=b.indexOf(".");
+		System.out.printf("%d\n", dotposition_a);
+		
+		a_intstr=a.substring(0, dotposition_a);
+		System.out.printf("%s\n", a_intstr);
+		
+		a_mtisastr=a.substring(dotposition_a+1, a.length());		
+		
+		b_intstr=b.substring(0, dotposition_b);
+		System.out.printf("%s\n", b_intstr);
+		
+		b_mtisastr=b.substring(dotposition_b+1, b.length());							
+		
+		//get maximum length for putting 0 to the less one
+		len1=a_mtisastr.length();
+		len2=b_mtisastr.length();		
+		maxlen=len1;
+		if(maxlen<len2)
+			maxlen=len2;							
+		
+		int i;
+		if(maxlen>len1){			
+			for(i=len1;i<maxlen;i++){
+				a_mtisastr=a_mtisastr + "0";						
+			}
+		}
+		else{
+			for(i=len2;i<maxlen;i++){
+				b_mtisastr=b_mtisastr + "0";
+			}
+		}				
+		
+		a_num=a_intstr + a_mtisastr;
+		b_num=b_intstr + b_mtisastr;
+		
+		System.out.printf("a=%s b=%s\n", a_mtisastr, b_mtisastr);
+		//System.out.printf("a_num=%s b_num=%s\n", a_num, b_num);
+		
+		
+		retstr=BI.add(a_num, b_num);	
+		retstr.substring(0,1);
+		//System.out.println(retstr.substring(0,1));
+		//System.out.printf("retstr=%s\n", retstr);
+		
+		
+		int retlen=retstr.length();
+		if(retlen>maxlen){
+			retint=retstr.substring(0, retlen-maxlen);
+			retmtisa=retstr.substring(retlen-maxlen, retlen);
+			//System.out.printf("retint=%s retmtisa=%s\n", retint, retmtisa);
+			retstr=retint + "." + retmtisa;
+		}
+		else if(retlen<=maxlen){			
+			for(i=0;i<(maxlen-retlen);i++){
+					retstr="0" + retstr; 								
+			}
+			retstr="0." + retstr;
+		}				
+		
+		return retstr;
+	}		
 	
 	String sub(String a, String b){
 		int dotposition_a, dotposition_b;
