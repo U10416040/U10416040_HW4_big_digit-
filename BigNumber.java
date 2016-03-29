@@ -3,15 +3,16 @@ import java.util.Scanner;
 public class BigNumber {
 	public static void main(String[] atgs){		
 		BigInt BI=new BigInt();
+		BigDecimal BD=new BigDecimal();
 		int decision_int=1;
-		int decision_decimal=0;
+		int decision_decimal=1;
 		int decision=0;
 		
 		Scanner input = new Scanner(System.in);
 		
 		System.out.print("Input 1 for integer, 2 for decimal: ");
 	    decision = input.nextInt();		
-	    System.out.printf("%d\n", decision);
+	    //System.out.printf("%d\n", decision);
 	    
 	    if(decision==1){
 	    	System.out.print("Input 1 for add, 2 for subtract, 3 for multiple: ");
@@ -23,39 +24,39 @@ public class BigNumber {
 		    decision_decimal = input.nextInt();
 		    //System.out.printf("%d\n", decsion_decimal);
 	    }
-		
-		
-		System.out.print("Enter first integer: ");
-	    String int1 = input.next();
-	    System.out.print("Enter second integer: ");
-	    String int2 = input.next();
+				
+		System.out.print("Enter first number: ");
+	    String str1 = input.next();
+	    System.out.print("Enter second number: ");
+	    String str2 = input.next();
 	    
 	    String ans=new String();
 	    
 	    if(decision==1){
 	    	if(decision_int==1){
-		    	ans=BI.add(int1, int2);
+		    	ans=BI.add(str1, str2);
 		    }
 		    else if(decision_int==2){
-		    	ans=BI.sub(int1, int2);
+		    	ans=BI.sub(str1, str2);
 		    }
 		    else if(decision_int==3){
-		    	ans=BI.multi(int1, int2);
+		    	ans=BI.multi(str1, str2);
 		    }
 	    }
 	    else if(decision==2){
-	    	//
+	    	if(decision_decimal==1){
+	    		ans=BD.add(str1, str2);
+	    	}
+	    	else if(decision_decimal==2){
+	    		ans=BD.sub(str1, str2);
+	    	}
 	    }
 
-	    System.out.printf("%s", ans);
-		
+	    System.out.printf("%s", ans);		
 	}
-
 }
 
-class BigInt{
-	
-	
+class BigInt{	
 	String unsign_add(String a, String b){
 		int num1[];
 		int num2[];
@@ -226,7 +227,6 @@ class BigInt{
 	}
 	
 	String sub(String a, String b){
-		int comp;
 		int a_sign=0, b_sign=0;
 		String a_prx, b_prx;
 		String retstr;
@@ -248,8 +248,8 @@ class BigInt{
 			retstr=unsign_add(a,b);
 		}
 		else if((a_sign==1 && b_sign==0)){
-			a=a.substring(1, a.length());
-			retstr="-" + unsign_add(b,a);
+			a=a.substring(1, a.length());			
+			retstr="-" + unsign_add(b,a);			
 		}
 		else if(a_sign==0 && b_sign==0){			
 			retstr=unsign_sub(a,b);
@@ -292,8 +292,7 @@ class BigInt{
 		return result;
 	}	
 	
-	String multi(String a, String b){
-		int comp;
+	String multi(String a, String b){		
 		int a_sign=0, b_sign=0;
 		String a_prx, b_prx;
 		String retstr;
@@ -371,10 +370,138 @@ class BigInt{
 		}
 			
 		return ret;
-	}
-
-
-		
+	}		
 }
 
+class BigDecimal{
+	BigInt BI=new BigInt();
+	
+	String add(String a, String b){
+		int dotposition;
+		String a_intstr=new String();
+		String a_mtisastr=new String();
+		String b_intstr=new String();
+		String b_mtisastr=new String();
+		
+		
+		dotposition=a.indexOf(".");
+		System.out.printf("%d\n", dotposition);
+		
+		a_intstr=a.substring(0, dotposition);
+		System.out.printf("%s\n", a_intstr);
+		
+		a_mtisastr=a.substring(dotposition+1, a.length());
+		System.out.printf("%s\n", a_mtisastr);
+		
+		b_intstr=a.substring(0, dotposition);
+		System.out.printf("%s\n", b_intstr);
+		
+		b_mtisastr=a.substring(dotposition+1, a.length());
+		System.out.printf("%s\n", b_mtisastr);				
+
+		
+		
+		return a;
+	}
+	
+	String sub(String a, String b){
+		int dotposition_a, dotposition_b;
+		String a_intstr=new String();
+		String a_mtisastr=new String();
+		String b_intstr=new String();		
+		String b_mtisastr=new String();
+		String a_num=new String();
+		String b_num=new String();
+		int maxlen, len1, len2;		
+		String retstr=new String();
+		String retint=new String();
+		String retmtisa=new String();
+		
+		//add .0 to those numbers which are integer
+		if(have_dot(a)==0){		
+			a=a+".0";
+		}
+		if(have_dot(b)==0){		
+			b=b+".0";
+		}
+				
+		
+		//get dot position
+		dotposition_a=a.indexOf(".");
+		dotposition_b=b.indexOf(".");
+		System.out.printf("%d\n", dotposition_a);
+		
+		a_intstr=a.substring(0, dotposition_a);
+		System.out.printf("%s\n", a_intstr);
+		
+		a_mtisastr=a.substring(dotposition_a+1, a.length());		
+		
+		b_intstr=b.substring(0, dotposition_b);
+		System.out.printf("%s\n", b_intstr);
+		
+		b_mtisastr=b.substring(dotposition_b+1, b.length());							
+		
+		//get maximum length for putting 0 to the less one
+		len1=a_mtisastr.length();
+		len2=b_mtisastr.length();		
+		maxlen=len1;
+		if(maxlen<len2)
+			maxlen=len2;							
+		
+		int i;
+		if(maxlen>len1){			
+			for(i=len1;i<maxlen;i++){
+				a_mtisastr=a_mtisastr + "0";						
+			}
+		}
+		else{
+			for(i=len2;i<maxlen;i++){
+				b_mtisastr=b_mtisastr + "0";
+			}
+		}				
+		
+		a_num=a_intstr + a_mtisastr;
+		b_num=b_intstr + b_mtisastr;
+		
+		System.out.printf("a=%s b=%s\n", a_mtisastr, b_mtisastr);
+		//System.out.printf("a_num=%s b_num=%s\n", a_num, b_num);
+		
+		
+		retstr=BI.sub(a_num, b_num);	
+		retstr.substring(0,1);
+		//System.out.println(retstr.substring(0,1));
+		//System.out.printf("retstr=%s\n", retstr);
+		
+		
+		int retlen=retstr.length();
+		if(retlen>maxlen){
+			retint=retstr.substring(0, retlen-maxlen);
+			retmtisa=retstr.substring(retlen-maxlen, retlen);
+			//System.out.printf("retint=%s retmtisa=%s\n", retint, retmtisa);
+			retstr=retint + "." + retmtisa;
+		}
+		else if(retlen<=maxlen){			
+			for(i=0;i<(maxlen-retlen);i++){
+					retstr="0" + retstr; 								
+			}
+			retstr="0." + retstr;
+		}				
+		
+		return retstr;
+	}
+	
+	int have_dot(String a){
+		int i;
+		char c1;
+		
+		for(i=0;i<a.length();i++){
+			c1=a.charAt(i);
+			if(c1=='.'){
+				return 1;
+			}
+		}
+		return 0;
+	}
+	
+}
 
