@@ -12,17 +12,14 @@ public class BigNumber {
 		
 		System.out.print("Input 1 for integer, 2 for decimal: ");
 	    decision = input.nextInt();		
-	    //System.out.printf("%d\n", decision);
-	    
+	    	    
 	    if(decision==1){
 	    	System.out.print("Input 1 for add, 2 for subtract, 3 for multiple: ");
 		    decision_int = input.nextInt();
-		    //System.out.printf("%d\n", decsion_int);
 	    }
 	    else if(decision==2){
 	    	System.out.print("Input 1 for add, 2 for subtract: ");
 		    decision_decimal = input.nextInt();
-		    //System.out.printf("%d\n", decsion_decimal);
 	    }
 				
 		System.out.print("Enter first number: ");
@@ -64,6 +61,7 @@ class BigInt{
 		String result=new String();
 		int maxlen, len1, len2;
 		
+		//find the max length
 		len1=a.length();
 		len2=b.length();
 		maxlen=len1;
@@ -74,6 +72,7 @@ class BigInt{
 		num2=new int[maxlen];				
 		ret=new int[maxlen+1];
 			
+		//turn string to int and put them in a array
 		int i;
 		for(i=0;i<=maxlen-1;i++){
 			if(len1-i>0)				
@@ -89,6 +88,7 @@ class BigInt{
 				num2[maxlen-1-i]=0;	
 		}
 		
+		//if two number plus together is bigger than 9 need to plus one in the next number
 		int j, sum;
 		sum=0;
 		for(j=maxlen-1;j>=0;j--){
@@ -100,7 +100,6 @@ class BigInt{
 		result="";
 		for(i=0;i<=maxlen;i++){
 			if((ret[0]!=0) || i>0){
-				//System.out.printf("%d", ret[i]);//for debug
 				result=result + Integer.toString(ret[i]);
 			}			
 			
@@ -127,6 +126,7 @@ class BigInt{
 		if(b_prx.compareTo("-")==0)
 			b_sign=1;//negative				
 		
+		//different input for different calculate term
 		if((a_sign==0 && b_sign==1)){
 			b=b.substring(1, b.length());
 			retstr=unsign_sub(a,b);
@@ -153,6 +153,7 @@ class BigInt{
 		String result=new String();
 		int maxlen, len1, len2;
 		
+		//find the max length
 		len1=a.length();
 		len2=b.length();
 		maxlen=len1;
@@ -162,7 +163,8 @@ class BigInt{
 		num1=new int[maxlen];
 		num2=new int[maxlen];				
 		ret=new int[maxlen];
-			
+		
+		//turn string to int and put them in a array
 		int i;
 		for(i=0;i<=maxlen-1;i++){
 			if(len1-i>0)				
@@ -181,7 +183,6 @@ class BigInt{
 		int negflag, comp;
 		negflag=0;
 		comp=comparestr(a, b);
-		//System.out.printf("comp=%d\n", comp);//for debug
 		if(comp<0){
 			tmpnum=num1;
 			num1=num2;
@@ -189,7 +190,7 @@ class BigInt{
 			negflag=1;
 		}		
 		
-		
+		//to see if the two number after subtract will it be negative if yes need to borrow 1  
 		int j, reg, bor;		
 		bor=0;
 		for(j=maxlen-1;j>=0;j--){
@@ -242,6 +243,7 @@ class BigInt{
 		if(b_prx.compareTo("-")==0)
 			b_sign=1;//negative				
 		
+		//different input for different calculate term		
 		if((a_sign==0 && b_sign==1)){
 			b=b.substring(1, b.length());
 			retstr=unsign_add(a,b);
@@ -273,7 +275,6 @@ class BigInt{
 		
 		int comp;		
 		comp=comparestr(a, b);
-		//System.out.printf("comp=%d\n", comp);//for debug
 		if(comp<0){
 			tmp=a;
 			a=b;
@@ -284,9 +285,8 @@ class BigInt{
 		Sstr=b;
 		result="0";
 		while(Sstr.compareTo("0")!=0){
-			result=unsign_add(result, Lstr);
-			//System.out.println(result);//for debug
-			Sstr=unsign_sub(Sstr, "1");
+			result=unsign_add(result, Lstr);//Lstr will be the large number and add many time
+			Sstr=unsign_sub(Sstr, "1");//see how many time need to add
 		}
 		return result;
 	}	
@@ -308,6 +308,7 @@ class BigInt{
 		if(b_prx.compareTo("-")==0)
 			b_sign=1;//negative				
 		
+		//different input for different calculate term
 		if((a_sign==0 && b_sign==1)){
 			b=b.substring(1, b.length());
 			retstr="-" + unsign_multi(a,b);
@@ -341,31 +342,32 @@ class BigInt{
 		len2=b.length();			
 		
 		if(len1>len2){
-			ret=1;
+			ret=1;//str1 bigger than str2 cause the length are different
 		}
 		
+		//same length need to compare
 		else if(len1==len2){
 			for(i=0;i<len1;i++){
 				str1=a.substring(i);
 				str2=b.substring(i);
 				comp=str1.compareTo(str2);
 				if(comp>0){
-					ret=1;
+					ret=1;//str1 bigger than str2
 					break;
 				}
 				else if(comp==0){
-					ret=0;
+					ret=0;//same
 					continue;
 				}
 				else{
 					ret=-1;
-					break;
+					break;//str1 smaller than str2
 				}
 			}
 		}
 		
 		else{
-			ret=-1;
+			ret=-1;//str1 smaller than str2
 		}
 			
 		return ret;
@@ -374,37 +376,7 @@ class BigInt{
 
 class BigDecimal{
 	BigInt BI=new BigInt();
-	
-	/*
-	String add(String a, String b){
-		int dotposition;
-		String a_intstr=new String();
-		String a_mtisastr=new String();
-		String b_intstr=new String();
-		String b_mtisastr=new String();
-		
-		
-		dotposition=a.indexOf(".");
-		System.out.printf("%d\n", dotposition);
-		
-		a_intstr=a.substring(0, dotposition);
-		System.out.printf("%s\n", a_intstr);
-		
-		a_mtisastr=a.substring(dotposition+1, a.length());
-		System.out.printf("%s\n", a_mtisastr);
-		
-		b_intstr=a.substring(0, dotposition);
-		System.out.printf("%s\n", b_intstr);
-		
-		b_mtisastr=a.substring(dotposition+1, a.length());
-		System.out.printf("%s\n", b_mtisastr);				
-
-		
-		
-		return a;
-	}
-	*/
-	
+			
 	String add(String a, String b){
 		int dotposition_a, dotposition_b;
 		String a_intstr=new String();
@@ -430,15 +402,12 @@ class BigDecimal{
 		//get dot position
 		dotposition_a=a.indexOf(".");
 		dotposition_b=b.indexOf(".");
-		System.out.printf("%d\n", dotposition_a);
 		
 		a_intstr=a.substring(0, dotposition_a);
-		System.out.printf("%s\n", a_intstr);
 		
 		a_mtisastr=a.substring(dotposition_a+1, a.length());		
 		
 		b_intstr=b.substring(0, dotposition_b);
-		System.out.printf("%s\n", b_intstr);
 		
 		b_mtisastr=b.substring(dotposition_b+1, b.length());							
 		
@@ -462,23 +431,16 @@ class BigDecimal{
 		}				
 		
 		a_num=a_intstr + a_mtisastr;
-		b_num=b_intstr + b_mtisastr;
-		
-		System.out.printf("a=%s b=%s\n", a_mtisastr, b_mtisastr);
-		//System.out.printf("a_num=%s b_num=%s\n", a_num, b_num);
-		
+		b_num=b_intstr + b_mtisastr;			
 		
 		retstr=BI.add(a_num, b_num);	
-		retstr.substring(0,1);
-		//System.out.println(retstr.substring(0,1));
-		//System.out.printf("retstr=%s\n", retstr);
+		retstr.substring(0,1);		
 		
-		
+		//different case like there won't have int part so need to decide
 		int retlen=retstr.length();
 		if(retlen>maxlen){
 			retint=retstr.substring(0, retlen-maxlen);
-			retmtisa=retstr.substring(retlen-maxlen, retlen);
-			//System.out.printf("retint=%s retmtisa=%s\n", retint, retmtisa);
+			retmtisa=retstr.substring(retlen-maxlen, retlen);			
 			retstr=retint + "." + retmtisa;
 		}
 		else if(retlen<=maxlen){			
@@ -516,15 +478,12 @@ class BigDecimal{
 		//get dot position
 		dotposition_a=a.indexOf(".");
 		dotposition_b=b.indexOf(".");
-		System.out.printf("%d\n", dotposition_a);
 		
 		a_intstr=a.substring(0, dotposition_a);
-		System.out.printf("%s\n", a_intstr);
 		
 		a_mtisastr=a.substring(dotposition_a+1, a.length());		
 		
 		b_intstr=b.substring(0, dotposition_b);
-		System.out.printf("%s\n", b_intstr);
 		
 		b_mtisastr=b.substring(dotposition_b+1, b.length());							
 		
@@ -550,21 +509,14 @@ class BigDecimal{
 		a_num=a_intstr + a_mtisastr;
 		b_num=b_intstr + b_mtisastr;
 		
-		System.out.printf("a=%s b=%s\n", a_mtisastr, b_mtisastr);
-		//System.out.printf("a_num=%s b_num=%s\n", a_num, b_num);
-		
-		
 		retstr=BI.sub(a_num, b_num);	
 		retstr.substring(0,1);
-		//System.out.println(retstr.substring(0,1));
-		//System.out.printf("retstr=%s\n", retstr);
 		
-		
+		//different case like there won't have int part so need to decide
 		int retlen=retstr.length();
 		if(retlen>maxlen){
 			retint=retstr.substring(0, retlen-maxlen);
 			retmtisa=retstr.substring(retlen-maxlen, retlen);
-			//System.out.printf("retint=%s retmtisa=%s\n", retint, retmtisa);
 			retstr=retint + "." + retmtisa;
 		}
 		else if(retlen<=maxlen){			
@@ -581,6 +533,7 @@ class BigDecimal{
 		int i;
 		char c1;
 		
+		//to see if there had a dot
 		for(i=0;i<a.length();i++){
 			c1=a.charAt(i);
 			if(c1=='.'){
@@ -589,6 +542,5 @@ class BigDecimal{
 		}
 		return 0;
 	}
-	
 }
 
